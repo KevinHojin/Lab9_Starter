@@ -1,108 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab 9</title>
+    <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+    <script>
+      window.TrackJS &&
+        TrackJS.install({
+          token: "977cab0e3c3a4cc1a125488dccaf0716",
+          // for more configuration options, see https://docs.trackjs.com
+        });
+    </script>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab 9</title>
+    <style>
+      button {
+        margin: 3px;
+      }
 
-  <style>
-    button {
-      margin: 3px;
-    }
+      button:hover {
+        cursor: pointer;
+      }
 
-    button:hover {
-      cursor: pointer;
-    }
+      #first-num,
+      #second-num {
+        width: 60px;
+      }
 
-    #first-num,
-    #second-num {
-      width: 60px;
-    }
+      output {
+        border: 1px solid gray;
+        display: block;
+        height: 18px;
+        margin-top: 5px;
+        padding: 5px;
+        width: 240px;
+      }
 
-    output {
-      border: 1px solid gray;
-      display: block;
-      height: 18px;
-      margin-top: 5px;
-      padding: 5px;
-      width: 240px;
-    }
+      main {
+        width: 800px;
+      }
 
-    main {
-      width: 800px;
-    }
+      #error-btns {
+        column-gap: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 30px;
+        row-gap: 5px;
+      }
 
-    #error-btns {
-      column-gap: 5px;
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 30px;
-      row-gap: 5px;
-    }
+      #error-btns > * {
+        padding: 8px 2px;
+        width: 122px;
+      }
+    </style>
+  </head>
 
-    #error-btns>* {
-      padding: 8px 2px;
-      width: 122px;
-    }
-  </style>
-</head>
+  <body>
+    <main>
+      <form>
+        <fieldset>
+          <legend>Error Calculator</legend>
+          <input name="first-num" id="first-num" />
+          <select name="operator" id="operator">
+            <option>+</option>
+            <option>-</option>
+            <option>*</option>
+            <option>/</option>
+          </select>
+          <input name="second-num" id="second-num" />
+          <button id="calculate">Calculate</button>
+          <br />
+          <output></output>
+        </fieldset>
+      </form>
 
-<body>
-  <main>
-    <form>
-      <fieldset>
-        <legend>Error Calculator</legend>
-        <input name="first-num" id="first-num" />
-        <select name="operator" id="operator">
-          <option>+</option>
-          <option>-</option>
-          <option>*</option>
-          <option>/</option>
-        </select>
-        <input name="second-num" id="second-num" />
-        <button id="calculate">Calculate</button>
-        <br />
-        <output></output>
-      </fieldset>
-    </form>
+      <section id="error-btns">
+        <button onclick="console.log('Console Log Demo')">Console Log</button>
+        <button onclick="console.error('Console Error Demo')">
+          Console Error
+        </button>
+        <button onclick="console.count('count button')">Console Count</button>
+        <button onclick="console.warn('console warn')">Console Warn</button>
+        <button onclick="console.assert(3==2)">Console Assert</button>
+        <button onclick="console.clear('Console was cleared')">
+          Console Clear
+        </button>
+        <button onclick="console.dir(document.head)">Console Dir</button>
+        <button onclick="console.dirxml(document)">Console dirxml</button>
+        <button onclick="console.group('demo group')">
+          Console Group Start
+        </button>
+        <button onclick="console.groupEnd('demo group')">
+          Console Group End
+        </button>
+        <button
+          onclick="console.table([{first: 'Kevin', last: 'An',}, {first: 'Thomas', last: 'Powell'}]);"
+        >
+          Console Table
+        </button>
+        <button onclick="console.time()">Start Timer</button>
+        <button onclick="console.timeEnd()">End Timer</button>
+        <button onclick="console.trace()">Console Trace</button>
+        <button onclick="console.table(boom)">Trigger a Global Error</button>
+      </section>
+    </main>
 
-    <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
-    </section>
-  </main>
+    <script>
+      let form = document.querySelector("form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let output = document.querySelector("output");
+        let firstNum = document.querySelector("#first-num").value;
+        let secondNum = document.querySelector("#second-num").value;
+        let operator = document.querySelector("#operator").value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      });
 
-  <script>
-    let form = document.querySelector('form');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
-    });
+      let errorBtns = Array.from(
+        document.querySelectorAll("#error-btns > button")
+      );
 
-    let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+      // Start your code here
+      // You may move this JS to another file if you wish
+      // reference from javascrip.info/try-catch
+      // step3
+      let testJson = { username: "Kevin" };
+      try {
+        let account = JSON.parse(JSON.stringify(testJson));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
-  </script>
-</body>
+        if (!account.password) {
+          throw new SyntaxError("There is no data: password");
+        }
 
+        alert(account.password);
+      } catch (err) {
+        alert("Error: " + err.message);
+      } finally {
+        alert("done try-catch part 3");
+      }
+
+      //reference from javascript.info/custom-errors
+      class AccountError extends Error {
+        constructor(message) {
+          super(message);
+          this.name = "AccountError";
+        }
+      }
+
+      function validAccount(json) {
+        let account = JSON.stringify(json);
+        if (!account.username) {
+          throw new AccountError("There is no username");
+        }
+        if (!account.password) {
+          throw new AccountError("There is no password");
+        }
+        return account;
+      }
+
+      try {
+        let testJson2 = validAccount({ username: "kevin321321" });
+      } catch (err) {
+        if (err instanceof AccountError) {
+          alert("Account Error: " + err.message);
+        }
+      } finally {
+        alert("done part 4");
+      }
+
+      //TrackJS.track("Testing TrackJS!");
+    </script>
+  </body>
 </html>
